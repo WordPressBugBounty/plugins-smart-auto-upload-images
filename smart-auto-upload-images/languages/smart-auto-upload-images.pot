@@ -1,0 +1,562 @@
+# Copyright (C) 2025 Burhan Nasir
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart Auto Upload Images 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/smart-auto-upload-images\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-07-25T12:06:20+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.9.0\n"
+"X-Domain: smart-auto-upload-images\n"
+
+#. Plugin Name of the plugin
+#: src/classes/Plugin.php:150
+msgid "Smart Auto Upload Images"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/burhandodhy/smart-auto-upload-images"
+msgstr ""
+
+#. Description of the plugin
+msgid "A modern WordPress plugin that automatically detects and uploads external images from post content with advanced settings."
+msgstr ""
+
+#. Author of the plugin
+msgid "Burhan Nasir"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://burhandodhy.me"
+msgstr ""
+
+#: smart-auto-upload-images.php:44
+msgid "Smart Auto Upload Images: Autoloader not found. Please run `composer install` to install the dependencies."
+msgstr ""
+
+#: src/classes/Admin/SettingsManager.php:133
+msgid "Please enter a valid URL for the base URL."
+msgstr ""
+
+#: src/classes/Admin/SettingsManager.php:137
+msgid "Image name pattern cannot be empty."
+msgstr ""
+
+#: src/classes/Admin/SettingsManager.php:141
+msgid "Alt text pattern cannot be empty."
+msgstr ""
+
+#: src/classes/Admin/SettingsManager.php:145
+msgid "Max width must be a positive number."
+msgstr ""
+
+#: src/classes/Admin/SettingsManager.php:149
+msgid "Max height must be a positive number."
+msgstr ""
+
+#: src/classes/Plugin.php:149
+#: assets/js/settings/components/SettingsApp.js:173
+#: dist/js/admin-settings.js:1209
+#: dist/js/admin-settings.js:671
+msgid "Smart Auto Upload Images Settings"
+msgstr ""
+
+#: src/classes/Plugin.php:182
+msgid "Settings"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:57
+#: dist/js/admin-settings.js:72
+#: dist/js/admin-settings.js:57
+msgid "Are you sure you want to clear all excluded domains?"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:71
+#: dist/js/admin-settings.js:106
+#: dist/js/admin-settings.js:71
+msgid "Exclude Domains"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:73
+#: dist/js/admin-settings.js:114
+#: dist/js/admin-settings.js:73
+msgid "Enter domains to exclude from image uploading (one per line)."
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:83
+#: dist/js/admin-settings.js:117
+#: dist/js/admin-settings.js:83
+msgid ""
+"https://example.com\n"
+"https://cdn.example.com"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:88
+#: dist/js/admin-settings.js:119
+#: dist/js/admin-settings.js:88
+msgid "Enter one domain per line. You can use full URLs or just domain names."
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:97
+#: dist/js/admin-settings.js:145
+#: dist/js/admin-settings.js:97
+msgid "Hide Help"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:98
+#: dist/js/admin-settings.js:145
+#: dist/js/admin-settings.js:98
+msgid "Show Help"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:101
+#: dist/js/admin-settings.js:155
+#: dist/js/admin-settings.js:101
+msgid "Add Example"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:110
+#: dist/js/admin-settings.js:166
+#: dist/js/admin-settings.js:110
+msgid "Clear All"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:117
+#: dist/js/admin-settings.js:181
+#: dist/js/admin-settings.js:117
+msgid "Domain Exclusion Examples:"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:121
+#: dist/js/admin-settings.js:202
+#: dist/js/admin-settings.js:121
+msgid "Exclude all images from example.com"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:128
+#: dist/js/admin-settings.js:216
+#: dist/js/admin-settings.js:128
+msgid "Exclude CDN images"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:132
+#: dist/js/admin-settings.js:230
+#: dist/js/admin-settings.js:132
+msgid "Exclude Unsplash images"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:136
+#: dist/js/admin-settings.js:244
+#: dist/js/admin-settings.js:136
+msgid "Exclude placeholder images"
+msgstr ""
+
+#: assets/js/settings/components/DomainExclusions.js:140
+#: dist/js/admin-settings.js:252
+#: dist/js/admin-settings.js:140
+msgid "The plugin will automatically ignore images from these domains when processing posts."
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:25
+#: dist/js/admin-settings.js:290
+#: dist/js/admin-settings.js:178
+msgid "Original filename"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:28
+#: dist/js/admin-settings.js:293
+#: dist/js/admin-settings.js:181
+msgid "Original alt text"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:30
+#: dist/js/admin-settings.js:296
+#: dist/js/admin-settings.js:183
+msgid "Post title"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:31
+#: dist/js/admin-settings.js:299
+#: dist/js/admin-settings.js:184
+msgid "Post ID"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:32
+#: dist/js/admin-settings.js:302
+#: dist/js/admin-settings.js:185
+msgid "Post slug"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:33
+#: dist/js/admin-settings.js:305
+#: dist/js/admin-settings.js:186
+msgid "Current year"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:34
+#: dist/js/admin-settings.js:308
+#: dist/js/admin-settings.js:187
+msgid "Current month"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:35
+#: dist/js/admin-settings.js:311
+#: dist/js/admin-settings.js:188
+msgid "Current day"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:38
+#: dist/js/admin-settings.js:314
+#: dist/js/admin-settings.js:191
+msgid "Today's date (Y-m-d)"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:42
+#: dist/js/admin-settings.js:317
+#: dist/js/admin-settings.js:195
+msgid "Post date (Y-m-d)"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:44
+#: dist/js/admin-settings.js:320
+#: dist/js/admin-settings.js:197
+msgid "Post year"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:45
+#: dist/js/admin-settings.js:323
+#: dist/js/admin-settings.js:198
+msgid "Post month"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:46
+#: dist/js/admin-settings.js:326
+#: dist/js/admin-settings.js:199
+msgid "Post day"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:47
+#: dist/js/admin-settings.js:329
+#: dist/js/admin-settings.js:200
+msgid "Random string"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:50
+#: dist/js/admin-settings.js:332
+#: dist/js/admin-settings.js:203
+msgid "Current timestamp"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:52
+#: dist/js/admin-settings.js:335
+#: dist/js/admin-settings.js:205
+msgid "Site URL"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:59
+#: dist/js/admin-settings.js:366
+#: dist/js/admin-settings.js:212
+msgid "Pattern Variables"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:63
+#: dist/js/admin-settings.js:381
+#: dist/js/admin-settings.js:216
+msgid "Use these variables in your filename and alt text patterns:"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:81
+#: dist/js/admin-settings.js:433
+#: dist/js/admin-settings.js:234
+msgid "Examples"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:86
+#: dist/js/admin-settings.js:462
+#: dist/js/admin-settings.js:239
+msgid "Filename Patterns"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:91
+#: dist/js/admin-settings.js:492
+#: dist/js/admin-settings.js:244
+msgid "my-blog-post-2025-01-img_abc123"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:100
+#: dist/js/admin-settings.js:514
+#: dist/js/admin-settings.js:253
+msgid "original-image-42"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:106
+#: dist/js/admin-settings.js:536
+#: dist/js/admin-settings.js:259
+msgid "2025/01/original-image"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:115
+#: dist/js/admin-settings.js:557
+#: dist/js/admin-settings.js:268
+msgid "Alt Text Patterns"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:120
+#: dist/js/admin-settings.js:587
+#: dist/js/admin-settings.js:273
+msgid "My Blog Post - Original Alt Text"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:129
+#: dist/js/admin-settings.js:609
+#: dist/js/admin-settings.js:282
+msgid "Original Alt Text | My Blog Post"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:143
+#: dist/js/admin-settings.js:630
+#: dist/js/admin-settings.js:296
+msgid "Plugin Information"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:148
+#: dist/js/admin-settings.js:659
+#: dist/js/admin-settings.js:301
+msgid "Version:"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:151
+#: dist/js/admin-settings.js:673
+#: dist/js/admin-settings.js:304
+msgid "Author:"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:155
+#: dist/js/admin-settings.js:694
+#: dist/js/admin-settings.js:308
+msgid "Support & Links"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:158
+#: dist/js/admin-settings.js:710
+#: dist/js/admin-settings.js:311
+msgid "GitHub Repository"
+msgstr ""
+
+#: assets/js/settings/components/InfoPanel.js:161
+#: dist/js/admin-settings.js:718
+#: dist/js/admin-settings.js:314
+msgid "Report Issues"
+msgstr ""
+
+#: assets/js/settings/components/PatternPreview.js:46
+#: dist/js/admin-settings.js:789
+#: dist/js/admin-settings.js:372
+msgid "Preview unavailable"
+msgstr ""
+
+#: assets/js/settings/components/PatternPreview.js:68
+#: dist/js/admin-settings.js:835
+#: dist/js/admin-settings.js:394
+msgid "Filename Preview:"
+msgstr ""
+
+#: assets/js/settings/components/PatternPreview.js:69
+#: dist/js/admin-settings.js:835
+#: dist/js/admin-settings.js:395
+msgid "Alt Text Preview:"
+msgstr ""
+
+#: assets/js/settings/components/PatternPreview.js:77
+#: dist/js/admin-settings.js:857
+#: dist/js/admin-settings.js:403
+msgid "No preview available"
+msgstr ""
+
+#: assets/js/settings/components/PostTypeSelector.js:50
+#: assets/js/settings/components/PostTypeSelector.js:60
+#: dist/js/admin-settings.js:939
+#: dist/js/admin-settings.js:964
+#: dist/js/admin-settings.js:465
+#: dist/js/admin-settings.js:475
+msgid "Exclude Post Types"
+msgstr ""
+
+#: assets/js/settings/components/PostTypeSelector.js:52
+#: dist/js/admin-settings.js:947
+#: dist/js/admin-settings.js:467
+msgid "No post types available."
+msgstr ""
+
+#: assets/js/settings/components/PostTypeSelector.js:62
+#: dist/js/admin-settings.js:972
+#: dist/js/admin-settings.js:477
+msgid "Select post types to exclude from automatic image uploading."
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:75
+#: dist/js/admin-settings.js:1081
+#: dist/js/admin-settings.js:573
+msgid "Failed to load settings."
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:97
+#: dist/js/admin-settings.js:1102
+#: dist/js/admin-settings.js:595
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:100
+#: dist/js/admin-settings.js:1104
+#: dist/js/admin-settings.js:598
+msgid "Failed to save settings."
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:114
+#: dist/js/admin-settings.js:1117
+#: dist/js/admin-settings.js:612
+msgid "Are you sure you want to reset all settings to defaults?"
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:133
+#: dist/js/admin-settings.js:1128
+#: dist/js/admin-settings.js:631
+msgid "Settings reset to defaults successfully!"
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:137
+#: dist/js/admin-settings.js:1130
+#: dist/js/admin-settings.js:635
+msgid "Failed to reset settings."
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:164
+#: dist/js/admin-settings.js:1176
+#: dist/js/admin-settings.js:662
+msgid "Loading settings..."
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:175
+#: dist/js/admin-settings.js:1217
+#: dist/js/admin-settings.js:673
+msgid "Configure how external images are automatically uploaded and processed."
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:197
+#: dist/js/admin-settings.js:1264
+#: dist/js/admin-settings.js:695
+msgid "Plugin Settings"
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:216
+#: dist/js/admin-settings.js:1308
+#: dist/js/admin-settings.js:714
+msgid "Save Settings"
+msgstr ""
+
+#: assets/js/settings/components/SettingsApp.js:219
+#: dist/js/admin-settings.js:1318
+#: dist/js/admin-settings.js:717
+msgid "Reset to Defaults"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:62
+#: dist/js/admin-settings.js:1423
+#: dist/js/admin-settings.js:794
+msgid "Basic Settings"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:66
+#: dist/js/admin-settings.js:1447
+#: dist/js/admin-settings.js:798
+msgid "Base URL"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:67
+#: dist/js/admin-settings.js:1448
+#: dist/js/admin-settings.js:799
+msgid "The base URL for uploaded images. Leave empty to use your site URL."
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:73
+#: dist/js/admin-settings.js:1451
+#: dist/js/admin-settings.js:805
+msgid "https://example.com"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:82
+#: dist/js/admin-settings.js:1481
+#: dist/js/admin-settings.js:814
+msgid "Image Name Pattern"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:83
+#: dist/js/admin-settings.js:1482
+#: dist/js/admin-settings.js:815
+msgid "Pattern for naming uploaded images. Use placeholders like %filename%, %post_title%, %year%, etc."
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:89
+#: dist/js/admin-settings.js:1485
+#: dist/js/admin-settings.js:821
+msgid "%filename%"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:101
+#: dist/js/admin-settings.js:1517
+#: dist/js/admin-settings.js:833
+msgid "Alt Text Pattern"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:102
+#: dist/js/admin-settings.js:1518
+#: dist/js/admin-settings.js:834
+msgid "Pattern for image alt text. Use placeholders like %image_alt%, %post_title%, etc."
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:108
+#: dist/js/admin-settings.js:1521
+#: dist/js/admin-settings.js:840
+msgid "%image_alt%"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:122
+#: dist/js/admin-settings.js:1545
+#: dist/js/admin-settings.js:854
+msgid "Image Processing"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:128
+#: dist/js/admin-settings.js:1569
+#: dist/js/admin-settings.js:860
+msgid "Maximum Width"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:129
+#: dist/js/admin-settings.js:1570
+#: dist/js/admin-settings.js:861
+msgid "Maximum width for uploaded images in pixels. Set to 0 to disable."
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:143
+#: dist/js/admin-settings.js:1590
+#: dist/js/admin-settings.js:875
+msgid "Maximum Height"
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:144
+#: dist/js/admin-settings.js:1591
+#: dist/js/admin-settings.js:876
+msgid "Maximum height for uploaded images in pixels. Set to 0 to disable."
+msgstr ""
+
+#: assets/js/settings/components/SettingsForm.js:160
+#: dist/js/admin-settings.js:1611
+#: dist/js/admin-settings.js:892
+msgid "Exclusions"
+msgstr ""
