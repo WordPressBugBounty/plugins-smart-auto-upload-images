@@ -1,6 +1,6 @@
 {
 	"name": "smart-auto-upload-images",
-	"version": "1.2.3",
+	"version": "1.2.4",
 	"description": "A modern WordPress plugin that automatically detects and uploads external images from post content with advanced settings and React-based admin interface.",
 	"main": "index.js",
 	"scripts": {

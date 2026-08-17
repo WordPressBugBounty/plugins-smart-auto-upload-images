@@ -1,9 +1,9 @@
 === Smart Auto Upload Images - Import External Images ===
 Contributors: burhandodhy
 Tags: auto-upload, import-images, media-library, external-images, seo
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -196,15 +196,15 @@ Import time depends on:
 ### Filter: smart_aui_validate_image_url
 Programmatically control which image URLs get imported.
 
-```
+<code>
 add_filter( 'smart_aui_validate_image_url', function( $is_valid, $url ) {
-	// Skip images from specific paths
-	if ( strpos( $url, '/cdn/avatars/' ) !== false ) {
-		return false;
-	}
-	return $is_valid;
+    // Skip images from specific paths
+    if ( strpos( $url, '/cdn/avatars/' ) !== false ) {
+        return false;
+    }
+    return $is_valid;
 }, 10, 2 );
-```
+</code>
 
 ### Additional Hooks
 Check plugin documentation for additional filters and actions to customize behavior.
@@ -355,31 +355,44 @@ Enable WordPress debug logging (WP_DEBUG_LOG) and check the wp-content/debug.log
 
 == Changelog ==
 
+= 1.2.4 - 2026-08-17 =
+
+__Added:__
+
+* Added WordPress 7.1 support.
+
 = 1.2.3 - 2026-01-31 =
 
 __Fixed:__
-* Fixed SSRF vulnerablity. Thanks Patchstack for reporting it!
+
+* Fixed SSRF vulnerability. Thanks Patchstack for reporting it!
 
 = 1.2.2 - 2026-01-10 =
 
 __Added:__
+
 * Added WordPress 6.9 support.
 
 __Fixed:__
+
 * Fixed post type exclusion.
 * Fixed deprecated warnings on the settings page.
 
 = 1.2.1 - 2025-11-01 =
+
 __Fixed:__
+
 * Fixed a security issue. Thanks Wordfence for reporting it!
 
 = 1.2.0 - 2025-09-28 =
 
 __Added:__
+
 * Added featured image import from external URL - set featured images using remote image URLs
 * Introduced `smart_aui_validate_image_url` filter hook for developers to customize image URL validation logic
 
 __Fixed:__
+
 * Improved duplicate detection system - automatically reuses existing images in media library instead of importing duplicates
 * Fixed undefined index PHP warning when processing images without complete metadata
 * Enhanced image validation with better error handling and logging
@@ -387,20 +400,24 @@ __Fixed:__
 = 1.1.1 - 2025-09-06 =
 
 __Fixed:__
+
 * Fixed missing plugin files during WordPress.org deployment process
 * Resolved asset loading issues in production environment
 
 = 1.1.0 - 2025-09-06 =
 
 __Added:__
+
 * Introduced new `%image_title%` dynamic tag for file naming patterns - use image title attributes in file names
 * Added support for image title attribute extraction during import
 
 __Changed:__
+
 * Replaced admin notices with modern snackbar notifications for better user experience
 * Improved notification system with auto-dismiss functionality
 
 __Fixed:__
+
 * Enhanced file name sanitization to properly handle special characters, spaces, and international characters
 * Fixed image file naming conflicts with duplicate names
 

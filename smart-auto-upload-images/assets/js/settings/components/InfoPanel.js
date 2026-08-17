@@ -142,12 +142,12 @@ const InfoPanel = () => {
 				<CardBody>
 					<VStack spacing={3}>
 						<div>
-							<strong>{__('Version:', 'smart-auto-upload-images')}</strong> 1.2.3
+							<strong>{__('Version:', 'smart-auto-upload-images')}</strong> 1.2.4
 						</div>
 						<div>
 							<strong>{__('Author: ', 'smart-auto-upload-images')}</strong>
 							<span>
-								<ExternalLink href="https://burhandodhy.me">
+								<ExternalLink href="https://burhandodhy.dev">
 									Burhan Nasir
 								</ExternalLink>
 							</span>

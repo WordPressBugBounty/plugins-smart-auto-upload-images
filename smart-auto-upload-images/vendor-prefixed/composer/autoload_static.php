@@ -4,7 +4,7 @@
 
 namespace SmartAutoUploadImages\Vendor_Prefixed\Composer\Autoload;
 
-class ComposerStaticInitdfbdffb07027e0ffeae8e38d7fd30cf6
+class ComposerStaticInitc5e0af28884a560fdc142fb24527875a
 {
     public static $prefixLengthsPsr4 = array (
         'S' =>
@@ -30,9 +30,9 @@ class ComposerStaticInitdfbdffb07027e0ffeae8e38d7fd30cf6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitdfbdffb07027e0ffeae8e38d7fd30cf6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitdfbdffb07027e0ffeae8e38d7fd30cf6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitdfbdffb07027e0ffeae8e38d7fd30cf6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc5e0af28884a560fdc142fb24527875a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc5e0af28884a560fdc142fb24527875a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc5e0af28884a560fdc142fb24527875a::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get asset info from extracted asset files
  *
- * @param string $slug Asset slug as defined in build/webpack configuration
- * @param string $attribute Optional attribute to get. Can be version or dependencies
+ * @param string $slug Asset slug as defined in build/webpack configuration.
+ * @param string $attribute Optional attribute to get. Can be version or dependencies.
  * @return string|array
  */
 function get_asset_info( $slug, $attribute = null ) {

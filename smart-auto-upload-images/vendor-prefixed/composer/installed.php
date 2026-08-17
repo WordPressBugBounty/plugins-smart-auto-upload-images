@@ -4,7 +4,7 @@
     'name' => 'smart-auto-upload-images/smart-auto-upload-images',
     'pretty_version' => 'dev-trunk',
     'version' => 'dev-trunk',
-    'reference' => '43be96be86b8e1318760bd0915b951a69176c594',
+    'reference' => 'df60010db526893ba828f1252401739453cfc425',
     'type' => 'wordpress-plugin',
     'install_path' => __DIR__ . '/../',
     'aliases' => 

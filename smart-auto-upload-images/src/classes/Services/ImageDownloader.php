@@ -325,14 +325,14 @@ class ImageDownloader {
 		$filename  = $image_data['filename'] . '.' . $image_data['extension'];
 		$file_path = $upload_dir['path'] . '/' . $filename;
 
-		// Check if image exists with same content
+		// Check if image exists with same content.
 		$has_exist = file_exists( $file_path ) && sha1( $file_content ) === sha1_file( $file_path );
 
 		if ( ! $has_exist ) {
 			return false;
 		}
 
-		// Image exists, prepare data
+		// Image exists, prepare data.
 		$file_url      = $upload_url . '/' . $filename;
 		$attachment_id = attachment_url_to_postid( $file_url );
 
@@ -343,7 +343,7 @@ class ImageDownloader {
 			'attachment_id' => $attachment_id ? $attachment_id : 0,
 		];
 
-		// Create attachment record if missing
+		// Create attachment record if missing.
 		if ( 0 === $attachment_id ) {
 			$attachment_id = $this->add_to_media_library( $existing_image, $image_data, $post_data );
 			if ( is_wp_error( $attachment_id ) ) {

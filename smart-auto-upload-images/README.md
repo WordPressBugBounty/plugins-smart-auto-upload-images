@@ -348,10 +348,15 @@ Enable WordPress debug logging (WP_DEBUG_LOG) and check the wp-content/debug.log
 
 ## Changelog
 
+### [1.2.4] - 2026-08-17
+
+#### Added
+* Added WordPress 7.1 support.
+
 ### [1.2.3] - 2026-01-31
 
 #### Fixed
-* Fixed SSRF vulnerablity. Thanks Patchstack for reporting it!
+* Fixed SSRF vulnerability. Thanks Patchstack for reporting it!
 
 ### [1.2.2] - 2026-01-10
 
