@@ -1,359 +1,153 @@
 === Smart Auto Upload Images - Import External Images ===
 Contributors: burhandodhy
 Tags: auto-upload, import-images, media-library, external-images, seo
+Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Import external images automatically on save. Adds to media library and updates URLs. No manual downloads. Works with any post type.
+Automatically import external images into your Media Library on save. Review recent imports and restore original URLs from import history.
 
 == Description ==
 
-Smart Auto Upload Images automatically imports external images from your post content into your WordPress media library. When you save or update a post, the plugin detects any external image URLs, downloads them to your server, and replaces the original URLs with your hosted versions. This improves site performance, ensures image availability, and gives you complete control over your content.
+Smart Auto Upload Images imports external images from your post content into the WordPress Media Library when you save or update a post. It replaces the original image URLs with local URLs, helping you keep a copy of the images your content depends on.
 
-## Why Auto Upload Images to Your Media Library?
+= Automatic image imports =
 
-When you copy content from external sources or use remote images, you risk broken images when the original source removes them. Hosting images on your own server provides several benefits:
+* Detects external image URLs in `img` tags, including `src` and `srcset`.
+* Imports supported images into the Media Library and updates matching URLs in post content.
+* Works with the Classic Editor, image markup in block content, and custom post types.
+* Supports external featured image imports from the post editor or REST API.
 
-* **Better SEO performance** - Search engines favor self-hosted images
-* **Faster page load times** - Eliminates external HTTP requests
-* **Full content control** - Images remain available even if sources go offline
+= Settings for your workflow =
 
-## How Auto Upload Images Works
+* Customize imported filenames and image alt text with pattern variables.
+* Set maximum image width and height.
+* Exclude specific post types or external domains.
+* Set a custom base URL for imported image links.
+* Reuse an existing image when the generated filename and downloaded file contents match.
 
-The plugin runs automatically whenever you save or update a post. Here's the process:
+= Import history and recovery — new in 1.3.0 =
 
-1. Scans post content for external image URLs (any image not hosted on your domain)
-2. Downloads each external image to a temporary location
-3. Validates image file integrity and format
-4. Uploads valid images to your WordPress media library
-5. Replaces original external URLs with new local URLs
-6. Attaches imported images to your post in the media library
+Open **Settings → Smart Auto Upload Images → History** to review recent successful post-content imports. Each entry shows the post, import time, image count, and original and imported URLs.
 
-No manual intervention required. Just write your content and let the plugin handle the rest.
+Select **Restore original URLs** to replace imported URLs that are still present in that post. Recovery preserves other post edits and keeps imported files in the Media Library.
 
-## Key Features
+* History starts with imports made after updating to 1.3.0; older imports are not added retroactively.
+* The plugin stores up to 500 import events per site and displays the latest 50 that you can edit.
+* Recovery applies to recorded URL replacements in post content. It does not restore alt text or featured images, or act as a full post backup.
+* If different original URLs share one imported image URL, recovery is blocked to avoid restoring the wrong source.
+* Recovered external URLs may be imported again when the post is saved normally. Exclude their domain or post type if you want them to remain external.
+* Administrators can access history and must have permission to edit a post before recovering it.
 
-### Automatic External Image Detection
+The **Settings** and **History** tabs have separate URLs, so you can bookmark a tab and use browser Back and Forward.
 
-The plugin automatically identifies external images in your post content when you save. It distinguishes between local images (already hosted on your site) and external images that need importing.
+= Filename and alt text patterns =
 
-### Smart URL Replacement
+Use variables such as:
 
-After importing images, the plugin intelligently replaces all instances of the external URL with your new local URL. This works with images in:
+* `%filename%` — original filename without its extension.
+* `%image_alt%` and `%image_title%` — original image attributes.
+* `%post_title%` and `%post_name%` — post title and slug.
+* `%year%`, `%month%`, `%day%`, and `%today_date%` — current UTC date values.
+* `%post_date%` — post date.
+* `%timestamp%` and `%random%` — timestamp or generated identifier.
 
-* Post content (Classic Editor and Gutenberg blocks)
-* Image galleries
-* Featured images
+For example, use `%post_name%-%filename%` for filenames or `%image_alt% - %post_title%` for alt text. The settings sidebar lists available variables.
 
-### Media Library Integration
+= Exclude external domains =
 
-All imported images are added to your WordPress media library with proper metadata. You can:
+In **Settings → Smart Auto Upload Images → Settings**, open **Exclusions** and enter one hostname or URL per line, such as `cdn.example.com` or `https://cdn.example.com`. Hostnames match without case sensitivity; add subdomains separately when needed.
 
-* Edit images using WordPress image editor
-* View which post each image is attached to
-* Set custom alt text during import
-* Apply your site's image optimization settings
+= Compatibility and limits =
 
-### Flexible Domain Exclusions
+Images must be publicly accessible and pass WordPress URL and file validation. Importing many or large images can increase post save time and consume disk space. Maximum dimensions control resizing, not download size.
 
-Exclude specific domains from auto-import. Useful for:
+Page builders are supported when they store image markup in post content. Images stored only in custom fields, CSS backgrounds, or other separate builder data are not guaranteed to be imported. There is no dedicated bulk import screen; existing content is processed when its posts are saved.
 
-* CDN-hosted images you want to keep external
-* Partner websites where you have permission to hotlink
-* Your own secondary domains
-* Social media embeds you want to keep as external
+Only import images you have permission to use. The plugin contacts the image hosts referenced in your content to download files.
 
-### Custom Post Type Control
+== Installation ==
 
-Choose which post types trigger auto-upload. Enable for:
+1. Install and activate **Smart Auto Upload Images** from **Plugins → Add New**, or upload the plugin ZIP using **Upload Plugin**.
+2. Open **Settings → Smart Auto Upload Images** and configure the **Settings** tab.
+3. Save a post containing an external image and check the Media Library for the imported file.
+4. Open the **History** tab to review the import or restore its original URLs.
 
-* Posts and pages (default)
-* WooCommerce products
-* Custom portfolio post types
-* Documentation posts
-* Or disable for specific types you want to skip
-
-### Advanced File Naming Patterns
-
-Set custom file naming patterns for imported images using dynamic tags:
-
-* `%filename%` - Original filename
-* `%post_title%` - Current post title
-* `%post_id%` - Post ID
-* `%image_title%` - Image title attribute
-* `%date%` - Current date
-* `%time%` - Current timestamp
-
-Example: `%post_title%-%filename%` becomes `my-blog-post-example-image.jpg`
-
-### Custom Alt Text Patterns
-
-Define alt text patterns for better SEO:
-
-* `%post_title%` - Use post title in alt text
-* `%filename%` - Use filename as alt text
-* Custom text - Set consistent alt text across imports
-
-### Image Size Constraints
-
-Set maximum width and height for imported images to:
-
-* Control storage usage
-* Maintain consistent image sizes
-* Automatically resize oversized images
-* Prevent huge images from slowing your site
-
-### Featured Image from URL
-
-Set a post's featured image using an external URL. The plugin will:
-
-* Download the image from the URL
-* Import it to your media library
-* Set it as the post's featured image
-* Work via REST API or post editor
-
-## How to Import External Images from Posts
-
-1. Install and activate Auto Upload Images
-2. Go to Settings → Auto Upload Images
-3. Configure your preferences (or use defaults)
-4. Create or edit any post with external images
-5. Click Save or Update - images import automatically
-6. Check your Media Library to see imported images
-
-## How to Exclude Specific Domains
-
-If you want to prevent images from certain domains from being imported:
-
-1. Go to Settings → Auto Upload Images
-2. Find the "Excluded Domains" section
-3. Enter domains one per line (e.g., cdn.example.com)
-4. Save settings
-5. Images from excluded domains will be left as external URLs
-
-## How to Set Custom File Names for Imported Images
-
-1. Navigate to Settings → Auto Upload Images
-2. Find "File Name Pattern" setting
-3. Enter your pattern using available tags:
-   * Example: `%post_title%-%filename%`
-   * Example: `imported-%date%-%filename%`
-4. Save settings
-5. New imports will use your naming pattern
-
-This helps organize your media library and improves SEO with descriptive file names.
-
-## How to Set Featured Image via URL
-
-**Using the Post Editor:**
-
-1. Edit your post
-2. Find the Featured Image section in the sidebar
-3. Enter the external image URL in the "Set from URL" field
-4. The image imports automatically and sets as featured image
-
-## Integration with Page Builders
-
-Auto Upload Images works with popular page builders:
-
-### Gutenberg Block Editor
-All images in Gutenberg blocks are automatically detected and imported when you save the post.
-
-### Classic Editor
-External images in Classic Editor content are imported on post save.
-
-### WooCommerce
-Enable auto-import for Product post type to automatically import external product images.
-
-### Custom Post Types
-Configure any custom post type to trigger auto-import functionality.
-
-Just ensure Auto Upload Images is active when running imports.
-
-## Performance and Storage Considerations
-
-### Server Storage
-Imported images consume server storage. Monitor your hosting plan's disk space if importing large quantities of images.
-
-### Import Speed
-Import time depends on:
-* Image file sizes
-* Your server's download speed
-* Number of images per post
-* Configured maximum dimensions
-
-### Optimization Tips
-* Set maximum width/height to reduce storage
-* Use an image optimization plugin after import
-* Exclude domains hosting very large images
-* Test with small batches before bulk imports
-
-## Developer Features
-
-### Filter: smart_aui_validate_image_url
-Programmatically control which image URLs get imported.
-
-<code>
-add_filter( 'smart_aui_validate_image_url', function( $is_valid, $url ) {
-    // Skip images from specific paths
-    if ( strpos( $url, '/cdn/avatars/' ) !== false ) {
-        return false;
-    }
-    return $is_valid;
-}, 10, 2 );
-</code>
-
-### Additional Hooks
-Check plugin documentation for additional filters and actions to customize behavior.
-
-## Troubleshooting
-
-### Images Not Importing
-
-**Problem:** External images remain unchanged after saving post
-
-**Solutions:**
-* Check if domain is in excluded domains list
-* Verify your server can make external HTTP requests
-* Check WordPress debug log for errors
-* Ensure PHP has necessary image processing libraries
-* Verify write permissions on uploads directory
-
-### Import Errors in Debug Log
-
-**Problem:** Seeing errors in wp-content/debug.log
-
-**Solutions:**
-* Check image URL is publicly accessible
-* Verify image format is supported (JPG, PNG, GIF, WebP)
-* Ensure external server allows download/hotlinking
-* Check SSL certificate validity if using HTTPS images
-
-### Images Upload but URLs Not Replaced
-
-**Problem:** Images added to media library but old URLs remain
-
-**Solutions:**
-* Clear any caching plugins
-* Check post content in Text/HTML mode
-* Verify images aren't in excluded domain list
-* Review file naming pattern doesn't cause conflicts
-
-### Duplicate Images in Media Library
-
-**Problem:** Same image imported multiple times
-
-**Solutions:**
-* Plugin should detect and reuse existing images (v1.2.0+)
-* Check if images have different URLs but same file
-* Clear media library of duplicates and re-save post
-
-### Featured Image Not Setting from URL
-
-**Problem:** Featured image URL not importing
-
-**Solutions:**
-* Verify URL is publicly accessible
-* Check image format is supported
-* Ensure PHP memory limit is sufficient
-* Review error logs for specific error messages
-
-### Maximum Width/Height Not Applied
-
-**Problem:** Images exceed configured dimensions
-
-**Solutions:**
-* Ensure GD or ImageMagick is installed on server
-* Check PHP memory limit allows image processing
-* Verify dimensions are set in plugin settings
-* Test with smaller images first
+Requires WordPress 6.2 or later and PHP 8.0 or later. Your server must be able to download public images and write to the WordPress uploads directory.
 
 == Frequently Asked Questions ==
 
-= Does this work with Gutenberg blocks? =
+= Does this work with Gutenberg and page builders? =
 
-Yes, the plugin scans all post content including Gutenberg blocks for external image URLs and imports them automatically.
-
-= Will this slow down my post save process? =
-
-Image import happens during post save, so very large images or many images may add a few seconds to save time. This is normal behavior for importing external content.
-
-= What happens if the external image is removed? =
-
-Once imported, the image is hosted on your server, so you retain a copy even if the original source removes it. This is one of the main benefits of auto-importing external images.
-
-= Can I exclude specific domains from import? =
-
-Yes, use the Excluded Domains setting to specify domains that should be left as external images. This is useful for CDN images or trusted partner sites.
+Yes, when images are stored as img tags in post content. This includes Classic Editor and block content. Page builders such as Elementor may store images in custom fields or separate data that the plugin cannot process.
 
 = Does this work with WooCommerce products? =
 
-Yes, enable the Product post type in settings to auto-import external images in WooCommerce product descriptions.
+Yes, for image markup in product descriptions. Ensure the product post type is not excluded. Product galleries stored separately are not automatically imported.
 
 = What image formats are supported? =
 
-JPG, JPEG, PNG, GIF, and WebP images are supported.
+Common formats include JPEG, PNG, GIF, and WebP, subject to WordPress file validation and the image processing support available on your server.
 
 = Can I bulk import images from existing posts? =
 
-The plugin works on post save. To bulk import images from existing posts, you would need to update those posts (a bulk edit action could trigger imports on multiple posts).
+There is no dedicated bulk import screen. Existing posts are processed when saved normally. Test any bulk-update workflow on a small set of posts first.
 
-= Will this import images from RSS feeds? =
+= Can I exclude specific domains from import? =
 
-Yes, if you import posts via RSS, any external images in the imported content will be detected and imported when you save the posts.
+Yes. Open Exclusions in Settings and enter one hostname or URL per line, such as cdn.example.com or https://cdn.example.com. Add subdomains separately.
 
-= Does this affect site performance? =
+= Will this slow down my post save process? =
 
-Image import happens server-side during post save. Once imported, images load from your server like any other media file. There's no performance impact on the frontend.
-
-= Can I customize imported image file names? =
-
-Yes, use file name patterns in settings with dynamic tags like %post_title%, %filename%, %date%, etc. to create descriptive, SEO-friendly file names.
-
-= Does this work with WordPress multisite? =
-
-Yes, each site in a multisite network can configure its own settings independently.
-
-= Can I set alt text for imported images? =
-
-Yes, use the alt text pattern setting with available tags to set descriptive alt text automatically for better SEO.
-
-= Will this work with page builders like Elementor? =
-
-If the page builder saves image URLs in post content, yes. Some builders use custom storage methods that may not be compatible. Test with your specific page builder.
+Imports run during post save. Save time depends on image count, file sizes, remote server response time, and your hosting resources.
 
 = How do I prevent duplicate imports? =
 
-Version 1.2.0+ automatically detects and reuses images that already exist in your media library based on the original image URL.
+An upload is reused when the generated filename and downloaded contents match. Changed files or naming patterns can create separate imports.
 
-= Can I import images from password-protected URLs? =
+= Why are my images not importing? =
 
-No, images must be publicly accessible for the plugin to download them.
+Check domain and post type exclusions, public image access, and uploads-directory permissions. WordPress URL checks can also reject unsafe URLs or redirects. Review the debug log for details.
 
-= What's the maximum image size I can import? =
+= How can I debug why an image is not saving? =
 
-This is limited by your server's PHP memory limit and your configured maximum dimensions in plugin settings. Most servers can handle images up to 5-10MB.
+1. Open the original image URL in a private browser window. It must load without logging in; your server must also be able to download it.
+2. Check the domain and post type exclusions in the Settings tab, and confirm the image appears in the post content as an img tag.
+3. Confirm that WordPress can write to wp-content/uploads and that your server has enough disk space and image processing support.
+4. In wp-config.php, enable WP_DEBUG and WP_DEBUG_LOG, and keep WP_DEBUG_DISPLAY disabled. Update existing definitions rather than adding duplicates.
+5. Save the affected post again, then check wp-content/debug.log for entries beginning with [Smart Auto Upload Images]. If WP_DEBUG_LOG uses a custom file path, check that file instead. Download failures, HTTP errors, and invalid image messages help identify the cause.
 
-= How do I import images from specific HTML attributes? =
+Disable debugging when finished. If you need support, include the relevant error message, your WordPress and PHP versions, and the steps to reproduce the problem.
 
-The plugin automatically scans standard img tags in post content. For custom implementations, you may need developer customization using available filters.
+= Can I undo an image import? =
 
-= Can I disable auto-import for specific posts? =
+Yes. In History, select Restore original URLs. Only recorded imported URLs still present in the post are restored; imported files remain in the Media Library. History starts with imports made after updating to 1.3.0.
 
-Yes, you can exclude specific post types from auto-import in the settings. For individual posts, you would need to temporarily disable the plugin.
+= Why did restored URLs get imported again? =
 
-= Will this work with lazy loading plugins? =
-
-Yes, the plugin works independently of lazy loading. It replaces URLs in the HTML, and lazy loading plugins will process the local URLs normally.
-
-= How do I troubleshoot failed imports? =
-
-Enable WordPress debug logging (WP_DEBUG_LOG) and check the wp-content/debug.log file for specific error messages about failed imports.
+Recovery skips importing during its own request. A normal post save runs imports again. Exclude the source domain or post type if you want those URLs to remain external.
 
 == Changelog ==
+
+= 1.3.0 - 2026-10-25 =
+
+__Added:__
+
+* Added recent import history with post details, timestamps, image counts, and original and imported URLs.
+* Added recovery of original post-content image URLs while retaining imported Media Library files.
+* Added separate Settings and History tabs with bookmarkable URLs and browser Back/Forward navigation.
+* Added regression tests for history, recovery, permissions, and safe image downloads.
+
+__Fixed:__
+
+* Preserve edited image URLs during recovery and reject ambiguous shared-URL mappings.
+* Apply alt-text patterns on first import without changing unrelated images.
+* Use the site URL when Base URL is blank and accept bare hostnames in domain exclusions.
+* Preserve complete source URLs and backslashes while processing saved post content.
+* Clear displayed exclusions after resetting settings and preserve keyboard focus when switching tabs.
 
 = 1.2.4 - 2026-08-17 =
 
@@ -425,6 +219,9 @@ __Fixed:__
 * Initial Release.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Adds import history and URL recovery, separate Settings and History tabs, and safer image-download redirects. History starts with new imports after updating.
 
 = 1.2.1 =
 Fixed vulnerability.

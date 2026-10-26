@@ -42,6 +42,7 @@ class ComposerStaticInita370f5ba660b9a992952808c1cbb234a
         'SmartAutoUploadImages\\Services\\ImageProcessor' => __DIR__ . '/../..' . '/src/classes/Services/ImageProcessor.php',
         'SmartAutoUploadImages\\Services\\ImageValidator' => __DIR__ . '/../..' . '/src/classes/Services/ImageValidator.php',
         'SmartAutoUploadImages\\Services\\PatternResolver' => __DIR__ . '/../..' . '/src/classes/Services/PatternResolver.php',
+        'SmartAutoUploadImages\\Services\\UrlReplacer' => __DIR__ . '/../..' . '/src/classes/Services/UrlReplacer.php',
         'SmartAutoUploadImages\\Utils\\Logger' => __DIR__ . '/../..' . '/src/classes/Utils/Logger.php',
         'SmartAutoUploadImages\\Utils\\Sanitizer' => __DIR__ . '/../..' . '/src/classes/Utils/Sanitizer.php',
     );

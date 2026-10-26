@@ -117,6 +117,7 @@ class ImageDownloader {
 		return [
 			...$save_result,
 			'attachment_id' => $attachment_id,
+			'alt_text'      => $image_data['alt_text'],
 		];
 	}
 
@@ -139,7 +140,7 @@ class ImageDownloader {
 			$args['headers']['host'] = $parsed_url['host'];
 		}
 
-		$response = wp_remote_get( $url, $args );
+		$response = wp_safe_remote_get( $url, $args );
 
 		if ( is_wp_error( $response ) ) {
 			$this->logger->error(

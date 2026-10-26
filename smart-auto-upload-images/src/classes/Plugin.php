@@ -16,6 +16,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Main Plugin Class
  */
 class Plugin {
+	/**
+	 * Imports are disabled temporarily while recovering original content.
+	 *
+	 * @var bool
+	 */
+	private bool $image_processing_enabled = true;
+
+	/**
+	 * Imports waiting for their post to finish saving.
+	 *
+	 * @var array
+	 */
+	private array $pending_image_imports = [];
+
+	/**
+	 * Imports from a new post save, whose post ID is not available in the data filter.
+	 *
+	 * @var array|null
+	 */
+	private ?array $pending_new_post_import = null;
 
 	/**
 	 * Constructor
@@ -37,6 +57,7 @@ class Plugin {
 	private function setup_hooks(): void {
 		// Post processing hooks.
 		add_filter( 'wp_insert_post_data', [ $this, 'process_post_images' ], 10, 2 );
+		add_action( 'wp_after_insert_post', [ $this, 'record_saved_post_imports' ], 10, 2 );
 		add_action( 'init', [ $this, 'register_custom_post_fields' ] );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
@@ -76,6 +97,10 @@ class Plugin {
 	 * @return array Modified post data.
 	 */
 	public function process_post_images( array $data, array $postarr ): array {
+		if ( ! $this->image_processing_enabled ) {
+			return $data;
+		}
+
 		if ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			return $data;
 		}
@@ -93,14 +118,103 @@ class Plugin {
 		}
 
 		// Process images.
-		$image_processor   = \SmartAutoUploadImages\get_container()->get( 'image_processor' );
-		$processed_content = $image_processor->process_post_content( $data['post_content'], $postarr );
+		$image_processor = \SmartAutoUploadImages\get_container()->get( 'image_processor' );
+		$process_result  = $image_processor->process_post_content_with_history( wp_unslash( $data['post_content'] ), $postarr );
 
-		if ( false !== $processed_content ) {
-			$data['post_content'] = $processed_content;
+		if ( false !== $process_result ) {
+			$data['post_content'] = wp_slash( $process_result['content'] );
+			if ( ! empty( $process_result['mappings'] ) ) {
+				$post_id = absint( $postarr['ID'] ?? 0 );
+				if ( $post_id ) {
+					$this->pending_image_imports[ $post_id ] = $process_result['mappings'];
+				} else {
+					$this->pending_new_post_import = [
+						'post_type' => $data['post_type'],
+						'mappings'  => $process_result['mappings'],
+					];
+				}
+			}
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Save import history after a post containing successfully imported images is saved.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post Post object.
+	 */
+	public function record_saved_post_imports( int $post_id, \WP_Post $post ): void {
+		$mappings = $this->pending_image_imports[ $post_id ] ?? null;
+		unset( $this->pending_image_imports[ $post_id ] );
+
+		if ( $this->pending_new_post_import ) {
+			if ( ! $mappings && $post->post_type === $this->pending_new_post_import['post_type'] ) {
+				$mappings = $this->pending_new_post_import['mappings'];
+			}
+			$this->pending_new_post_import = null;
+		}
+
+		if ( $mappings ) {
+			$this->record_import_history( $post_id, $mappings );
+		}
+	}
+
+	/**
+	 * Add a successful import to the site's recent history.
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $mappings Original and imported URL pairs.
+	 */
+	public function record_import_history( int $post_id, array $mappings ): void {
+		$post = get_post( $post_id );
+		if ( ! $post || empty( $mappings ) ) {
+			return;
+		}
+
+		$history = get_option( 'smart_aui_import_history', [] );
+		if ( ! is_array( $history ) ) {
+			$history = [];
+		}
+
+		array_unshift(
+			$history,
+			[
+				'id'           => wp_generate_uuid4(),
+				'post_id'      => $post_id,
+				'post_title'   => get_the_title( $post ),
+				'imported_at'  => current_time( 'mysql', true ),
+				'mappings'     => $mappings,
+				'recovered_at' => '',
+			]
+		);
+
+		update_option( 'smart_aui_import_history', array_slice( $history, 0, 500 ), false );
+	}
+
+	/**
+	 * Update post content without running automatic image imports.
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $content New post content.
+	 * @return int|\WP_Error
+	 */
+	public function update_post_content_without_import( int $post_id, string $content ) {
+		$was_enabled                    = $this->image_processing_enabled;
+		$this->image_processing_enabled = false;
+
+		try {
+			return wp_update_post(
+				[
+					'ID'           => $post_id,
+					'post_content' => wp_slash( $content ),
+				],
+				true
+			);
+		} finally {
+			$this->image_processing_enabled = $was_enabled;
+		}
 	}
 
 	/**
@@ -146,12 +260,11 @@ class Plugin {
 			return;
 		}
 
-		$asset_file = include SMART_AUI_PLUGIN_DIR . 'dist/js/admin-settings.asset.php';
 		wp_enqueue_script(
 			'smart-aui-admin-settings',
 			SMART_AUI_PLUGIN_URL . 'dist/js/admin-settings.js',
-			$asset_file['dependencies'],
-			$asset_file['version'],
+			\SmartAutoUploadImages\Utils\get_asset_info( 'admin-settings', 'dependencies' ),
+			\SmartAutoUploadImages\Utils\get_asset_info( 'admin-settings', 'version' ),
 			true
 		);
 
@@ -163,12 +276,11 @@ class Plugin {
 			]
 		);
 
-		$asset_file = include SMART_AUI_PLUGIN_DIR . 'dist/css/admin-settings-style.asset.php';
 		wp_enqueue_style(
 			'smart-aui-admin-settings-style',
 			SMART_AUI_PLUGIN_URL . 'dist/css/admin-settings-style.css',
 			[ 'wp-components' ],
-			$asset_file['version'],
+			\SmartAutoUploadImages\Utils\get_asset_info( 'admin-settings-style', 'version' ),
 		);
 	}
 

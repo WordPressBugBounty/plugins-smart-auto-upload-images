@@ -142,7 +142,7 @@ const InfoPanel = () => {
 				<CardBody>
 					<VStack spacing={3}>
 						<div>
-							<strong>{__('Version:', 'smart-auto-upload-images')}</strong> 1.2.4
+							<strong>{__('Version:', 'smart-auto-upload-images')}</strong> 1.3.0
 						</div>
 						<div>
 							<strong>{__('Author: ', 'smart-auto-upload-images')}</strong>

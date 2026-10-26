@@ -57,6 +57,18 @@ class ImageProcessor {
 	 * @return string|false Processed content or false on no changes.
 	 */
 	public function process_post_content( string $content, array $post_data ) {
+		$result = $this->process_post_content_with_history( $content, $post_data );
+		return false === $result ? false : $result['content'];
+	}
+
+	/**
+	 * Process post content and return successful URL replacements for recovery.
+	 *
+	 * @param string $content Post content.
+	 * @param array  $post_data Post data.
+	 * @return array|false Processed content and URL mappings, or false if unchanged.
+	 */
+	public function process_post_content_with_history( string $content, array $post_data ) {
 		$images = $this->find_images_in_content( $content );
 
 		if ( empty( $images ) ) {
@@ -65,6 +77,7 @@ class ImageProcessor {
 
 		$processed_content = $content;
 		$processed_count   = 0;
+		$mappings          = [];
 
 		foreach ( $images as $image ) {
 
@@ -81,7 +94,20 @@ class ImageProcessor {
 				continue;
 			}
 
-			$processed_content = $this->replace_image_url( $processed_content, $image, $result );
+			$imported_url      = $this->get_imported_url( $result['url'] );
+			$replacement       = $this->replace_image_url(
+				$processed_content,
+				$image,
+				$imported_url,
+				$result['alt_text'] ?? $image['alt'] ?? ''
+			);
+			$processed_content = $replacement['content'];
+			if ( $replacement['replaced_urls'] && $image['url'] !== $imported_url ) {
+				$mappings[] = [
+					'original_url' => esc_url_raw( $image['url'] ),
+					'imported_url' => $imported_url,
+				];
+			}
 			++$processed_count;
 		}
 
@@ -93,7 +119,10 @@ class ImageProcessor {
 					'processed_count' => $processed_count,
 				]
 			);
-			return $processed_content;
+			return [
+				'content'  => $processed_content,
+				'mappings' => $mappings,
+			];
 		}
 
 		return false;
@@ -257,26 +286,36 @@ class ImageProcessor {
 	 *
 	 * @param string $content Content to modify.
 	 * @param array  $image Original image data.
-	 * @param array  $result Download result.
-	 * @return string Modified content.
+	 * @param string $new_url Replacement URL.
+	 * @param string $new_alt Replacement alt text.
+	 * @return array Modified content and the source URLs that were replaced.
 	 */
-	private function replace_image_url( string $content, array $image, array $result ): string {
-		$settings = \SmartAutoUploadImages\Plugin::get_settings();
-		$base_url = trim( $settings['base_url'], '/' );
-
-		$new_url_parts = wp_parse_url( $result['url'] );
-		$new_url       = $base_url . $new_url_parts['path'];
-
-		$content = str_replace( $image['url'], $new_url, $content );
-
-		if ( ! empty( $image['alt'] ) ) {
-			$old_alt_pattern = 'alt=["\']' . preg_quote( $image['alt'], '/' ) . '["\']';
-			$new_alt         = $result['alt_text'] ?? $image['alt'];
-			$new_alt_pattern = 'alt="' . esc_attr( $new_alt ) . '"';
-
-			$content = preg_replace( '/' . $old_alt_pattern . '/i', $new_alt_pattern, $content );
+	private function replace_image_url( string $content, array $image, string $new_url, string $new_alt ): array {
+		$processor = new \WP_HTML_Tag_Processor( $content );
+		while ( $processor->next_tag( 'img' ) ) {
+			$srcset      = $processor->get_attribute( 'srcset' );
+			$srcset_urls = $srcset ? $this->extract_urls_from_srcset( $srcset ) : [];
+			if ( $processor->get_attribute( 'src' ) !== $image['url'] && ! in_array( $image['url'], $srcset_urls, true ) ) {
+				continue;
+			}
+			if ( ( $processor->get_attribute( 'alt' ) ?? '' ) !== $new_alt ) {
+				$processor->set_attribute( 'alt', $new_alt );
+			}
 		}
 
-		return $content;
+		return UrlReplacer::replace( $processor->get_updated_html(), [ $image['url'] => $new_url ] );
+	}
+
+	/**
+	 * Build the URL written into post content for an imported file.
+	 *
+	 * @param string $url Uploaded file URL.
+	 * @return string Replacement URL.
+	 */
+	private function get_imported_url( string $url ): string {
+		$settings      = \SmartAutoUploadImages\Plugin::get_settings();
+		$base_url      = $settings['base_url'] ? $settings['base_url'] : site_url();
+		$new_url_parts = wp_parse_url( $url );
+		return untrailingslashit( $base_url ) . ( $new_url_parts['path'] ?? '' );
 	}
 }

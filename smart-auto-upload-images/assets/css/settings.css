@@ -218,6 +218,69 @@
 	}
 }
 
+.smart-aui-history {
+	& h2 {
+		margin: 0;
+	}
+
+	& .components-notice {
+		margin: 12px 0;
+	}
+}
+
+.smart-aui-history__header {
+	align-items: flex-start;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	justify-content: space-between;
+	margin-bottom: 16px;
+
+	& p {
+		margin: 8px 0 0;
+		max-width: 760px;
+	}
+}
+
+.smart-aui-history__list {
+	border-top: 1px solid #dcdcde;
+	list-style: none;
+	margin: 16px 0;
+	padding: 0;
+}
+
+.smart-aui-history__item {
+	border-bottom: 1px solid #dcdcde;
+	padding: 12px 0;
+}
+
+.smart-aui-history__urls {
+	list-style: disc;
+	margin: 8px 0 12px 24px;
+
+	& li {
+		margin-bottom: 4px;
+		overflow-wrap: anywhere;
+	}
+
+	& code {
+		font-size: 12px;
+	}
+}
+
+.smart-aui-history__event-header {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	justify-content: space-between;
+
+	& time {
+		color: #646970;
+		font-size: 12px;
+	}
+}
+
 
 .smart-aui-help-panel {
 	background-color: #f0f6fc;

@@ -142,7 +142,7 @@ class ImageValidator {
 		$site_host = wp_parse_url( site_url(), PHP_URL_HOST );
 		$url_host  = wp_parse_url( $url, PHP_URL_HOST );
 
-		return $site_host !== $url_host;
+		return strtolower( $site_host ?? '' ) !== strtolower( $url_host ?? '' );
 	}
 
 	/**
@@ -168,7 +168,10 @@ class ImageValidator {
 			}
 
 			$domain_host = wp_parse_url( $domain, PHP_URL_HOST );
-			if ( $url_host === $domain_host ) {
+			if ( ! $domain_host ) {
+				$domain_host = wp_parse_url( 'https://' . $domain, PHP_URL_HOST );
+			}
+			if ( $domain_host && 0 === strcasecmp( $url_host ?? '', $domain_host ) ) {
 				return true;
 			}
 		}

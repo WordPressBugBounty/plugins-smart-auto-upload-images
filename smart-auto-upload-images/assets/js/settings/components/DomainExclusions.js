@@ -23,28 +23,17 @@ import {
  * @returns {WPElement} The domain exclusions component.
  */
 const DomainExclusions = ({ domains, onChange }) => {
-	const [localDomains, setLocalDomains] = useState(domains);
 	const [showHelp, setShowHelp] = useState(false);
-
-	/**
-	 * Handle textarea change
-	 *
-	 * @param {string} value - The value to set.
-	 */
-	const handleChange = (value) => {
-		setLocalDomains(value);
-		onChange(value);
-	};
 
 	/**
 	 * Add example domain
 	 */
 	const addExampleDomain = () => {
 		const exampleDomain = 'https://example.com';
-		const currentDomains = localDomains.trim();
+		const currentDomains = domains.trim();
 		const newDomains = currentDomains ? `${currentDomains}\n${exampleDomain}` : exampleDomain;
 
-		handleChange(newDomains);
+		onChange(newDomains);
 	};
 
 	/**
@@ -60,7 +49,7 @@ const DomainExclusions = ({ domains, onChange }) => {
 				),
 			)
 		) {
-			handleChange('');
+			onChange('');
 		}
 	};
 
@@ -78,8 +67,8 @@ const DomainExclusions = ({ domains, onChange }) => {
 				</div>
 
 				<TextareaControl
-					value={localDomains}
-					onChange={handleChange}
+					value={domains}
+					onChange={onChange}
 					placeholder={__(
 						'https://example.com\nhttps://cdn.example.com',
 						'smart-auto-upload-images',
@@ -101,7 +90,7 @@ const DomainExclusions = ({ domains, onChange }) => {
 					<Button variant="secondary" size="small" onClick={addExampleDomain}>
 						{__('Add Example', 'smart-auto-upload-images')}
 					</Button>
-					{localDomains && (
+					{domains && (
 						<Button
 							variant="secondary"
 							size="small"

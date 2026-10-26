@@ -4,7 +4,7 @@
  * @package SmartAutoUploadImages
  */
 
-import { useState, useEffect, WPElement } from '@wordpress/element';
+import { useState, useEffect, useRef, WPElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	Card,
@@ -13,14 +13,17 @@ import {
 	SnackbarList,
 	Spinner,
 	Button,
+	TabPanel,
 	__experimentalSpacer as Spacer, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	__experimentalVStack as VStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 	__experimentalHStack as HStack, // eslint-disable-line @wordpress/no-unsafe-wp-apis
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 
+import { useSearchParams } from 'react-router';
 import SettingsForm from './SettingsForm';
 import InfoPanel from './InfoPanel';
+import HistoryPanel from './HistoryPanel';
 
 /**
  * Settings App Component
@@ -28,11 +31,16 @@ import InfoPanel from './InfoPanel';
  * @returns {WPElement|null} The settings app component.
  */
 const SettingsApp = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const activeTab = searchParams.get('tab') === 'history' ? 'history' : 'settings';
 	const [settings, setSettings] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
 	const [snackbars, setSnackbars] = useState([]);
 	const [hasChanges, setHasChanges] = useState(false);
+	const [historyCount, setHistoryCount] = useState(null);
+	const tabContainer = useRef(null);
+	const shouldFocusTab = useRef(false);
 
 	/**
 	 * Add snackbar
@@ -152,6 +160,13 @@ const SettingsApp = () => {
 		loadSettings();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+	useEffect(() => {
+		if (shouldFocusTab.current) {
+			tabContainer.current.querySelector('[role="tab"][aria-selected="true"]').focus();
+			shouldFocusTab.current = false;
+		}
+	}, [activeTab]);
+
 	if (isLoading) {
 		return (
 			<div className="smart-aui-admin-loading">
@@ -162,7 +177,7 @@ const SettingsApp = () => {
 	}
 
 	return (
-		<div className="smart-aui-admin-wrapper">
+		<div className="smart-aui-admin-wrapper" ref={tabContainer}>
 			<VStack spacing={4}>
 				<div className="smart-aui-admin-header">
 					<h1>{__('Smart Auto Upload Images Settings', 'smart-auto-upload-images')}</h1>
@@ -174,50 +189,94 @@ const SettingsApp = () => {
 					</p>
 				</div>
 
-				<div className="smart-aui-admin-content">
-					<div className="smart-aui-admin-main">
-						<Card>
-							<CardHeader>
-								<h2>{__('Plugin Settings', 'smart-auto-upload-images')}</h2>
-							</CardHeader>
-							<CardBody>
-								<SettingsForm
-									settings={settings}
-									onSettingsChange={handleSettingsChange}
-								/>
-							</CardBody>
-						</Card>
+				<TabPanel
+					key={activeTab}
+					className="smart-aui-settings-tabs"
+					initialTabName={activeTab}
+					onSelect={(tab) => {
+						if (tab !== activeTab) {
+							shouldFocusTab.current = true;
+							setSearchParams((params) => {
+								const nextParams = new URLSearchParams(params);
+								nextParams.set('tab', tab);
+								return nextParams;
+							});
+						}
+					}}
+					tabs={[
+						{
+							name: 'settings',
+							title: __('Settings', 'smart-auto-upload-images'),
+						},
+						{
+							name: 'history',
+							title:
+								historyCount === null
+									? __('History', 'smart-auto-upload-images')
+									: `${__('History', 'smart-auto-upload-images')} (${historyCount})`,
+						},
+					]}
+				>
+					{(tab) =>
+						tab.name === 'settings' ? (
+							<div className="smart-aui-admin-content">
+								<div className="smart-aui-admin-main">
+									<Card>
+										<CardHeader>
+											<h2>
+												{__('Plugin Settings', 'smart-auto-upload-images')}
+											</h2>
+										</CardHeader>
+										<CardBody>
+											<SettingsForm
+												settings={settings}
+												onSettingsChange={handleSettingsChange}
+											/>
+										</CardBody>
+									</Card>
 
-						<Spacer marginTop={4} />
+									<Spacer marginTop={4} />
 
-						<HStack justify="flex-start" spacing={2}>
-							<Button
-								variant="primary"
-								onClick={() => saveSettings(settings)}
-								isBusy={isSaving}
-								disabled={!hasChanges || isSaving}
-							>
-								{__('Save Settings', 'smart-auto-upload-images')}
-							</Button>
-							<Button variant="secondary" onClick={resetSettings} disabled={isSaving}>
-								{__('Reset to Defaults', 'smart-auto-upload-images')}
-							</Button>
-						</HStack>
-						<SnackbarList
-							className="smart-aui-admin-snackbar-list"
-							notices={snackbars.map((snackbar) => ({
-								id: snackbar.id,
-								content: snackbar.message,
-								status: snackbar.type,
-							}))}
-							onRemove={removeSnackbar}
-						/>
-					</div>
-
-					<div className="smart-aui-admin-sidebar">
-						<InfoPanel />
-					</div>
-				</div>
+									<HStack justify="flex-start" spacing={2}>
+										<Button
+											variant="primary"
+											onClick={() => saveSettings(settings)}
+											isBusy={isSaving}
+											disabled={!hasChanges || isSaving}
+										>
+											{__('Save Settings', 'smart-auto-upload-images')}
+										</Button>
+										<Button
+											variant="secondary"
+											onClick={resetSettings}
+											disabled={isSaving}
+										>
+											{__('Reset to Defaults', 'smart-auto-upload-images')}
+										</Button>
+									</HStack>
+									<SnackbarList
+										className="smart-aui-admin-snackbar-list"
+										notices={snackbars.map((snackbar) => ({
+											id: snackbar.id,
+											content: snackbar.message,
+											status: snackbar.type,
+										}))}
+										onRemove={removeSnackbar}
+									/>
+								</div>
+								<div className="smart-aui-admin-sidebar">
+									<InfoPanel />
+								</div>
+							</div>
+						) : (
+							<Card>
+								<CardBody>
+									<HistoryPanel onHistoryLoaded={setHistoryCount} />
+								</CardBody>
+							</Card>
+						)
+					}
+				</TabPanel>
 			</VStack>
 		</div>
 	);

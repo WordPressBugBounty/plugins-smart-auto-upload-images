@@ -5,6 +5,7 @@
  */
 
 import { createRoot, render } from '@wordpress/element';
+import { BrowserRouter } from 'react-router';
 import SettingsApp from './components/SettingsApp';
 
 /**
@@ -17,11 +18,17 @@ function initializeAdmin() {
 		return;
 	}
 
+	const app = (
+		<BrowserRouter>
+			<SettingsApp />
+		</BrowserRouter>
+	);
+
 	if (typeof createRoot === 'function') {
 		const root = createRoot(rootElement);
-		root.render(<SettingsApp />);
+		root.render(app);
 	} else {
-		render(<SettingsApp />, rootElement);
+		render(app, rootElement);
 	}
 }
 

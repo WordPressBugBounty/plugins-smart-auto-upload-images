@@ -19,6 +19,7 @@ return array(
     'SmartAutoUploadImages\\Services\\ImageProcessor' => $baseDir . '/src/classes/Services/ImageProcessor.php',
     'SmartAutoUploadImages\\Services\\ImageValidator' => $baseDir . '/src/classes/Services/ImageValidator.php',
     'SmartAutoUploadImages\\Services\\PatternResolver' => $baseDir . '/src/classes/Services/PatternResolver.php',
+    'SmartAutoUploadImages\\Services\\UrlReplacer' => $baseDir . '/src/classes/Services/UrlReplacer.php',
     'SmartAutoUploadImages\\Utils\\Logger' => $baseDir . '/src/classes/Utils/Logger.php',
     'SmartAutoUploadImages\\Utils\\Sanitizer' => $baseDir . '/src/classes/Utils/Sanitizer.php',
 );
